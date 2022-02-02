@@ -1,0 +1,12 @@
+/testJPA/
+/plantillasEmail/
+/libraries/
+/Test/
+/target/
+/.metadata/
+/.settings/
+/RemoteSystemsTempFiles/
+.classpath
+..classpath
+.project
+.jar
