@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.mail.Address;
 import javax.mail.BodyPart;
@@ -39,6 +40,37 @@ public class EmailUtils {
 		// Analiza todos los mensajes
 		for (int i = 0;  i < messages.length  ; i++) {
 			MimeMessage msg = (MimeMessage) messages[i];
+			System.out.println ("------------------ sección de análisis" + msg.getMessageNumber () + "mail ---------------- -------- ");
+			System.out.println ("Asunto:" + getSubject (msg));
+			System.out.println ("De:" + getFrom (msg));
+			System.out.println ("Destinatario:" + getReceiveAddress (msg, null));
+			System.out.println ("Tiempo de envío:" + getSentDate (msg, null));
+			System.out.println ("¿Has leído:" + isSeen (msg));
+			System.out.println ("Prioridad de correo:" + getPriority (msg));
+			System.out.println ("¿Necesita un acuse de recibo:" + isReplySign (msg));
+			System.out.println ("Tamaño del correo:" + msg.getSize () * 1024 + "kb");
+			boolean isContainerAttachment = isContainAttachment(msg);
+			System.out.println ("¿Contiene archivos adjuntos:" + isContainerAttachment);
+			if (isContainerAttachment) {
+				saveAttachment (msg, "c: \\ mailtmp \\" + msg.getSubject () + "_"); // Guardar adjunto
+			} 
+			StringBuffer content = new StringBuffer(30);
+			getMailTextContent(msg, content);
+			System.out.println ("cuerpo del correo:" + (content.length ()> 100? content.substring(0,100) + "...": content));
+			System.out.println ("------------------  " + msg.getMessageNumber () + "Fin del análisis del mensaje ------------- --------- ");
+			System.out.println();
+		}
+	}
+	
+	public static void parseMessage(List<Message> messages) throws MessagingException, IOException {
+		if (messages == null || messages.size() < 1) 
+			throw new MessagingException("ERROR NO HAY MENSAJES NUEVOS");
+		int length=messages.size();
+		
+       
+		// Analiza todos los mensajes
+		for (int i = 0;  i < messages.size()  ; i++) {
+			MimeMessage msg = (MimeMessage) messages.get(i);
 			System.out.println ("------------------ sección de análisis" + msg.getMessageNumber () + "mail ---------------- -------- ");
 			System.out.println ("Asunto:" + getSubject (msg));
 			System.out.println ("De:" + getFrom (msg));

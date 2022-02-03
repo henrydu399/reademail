@@ -46,19 +46,24 @@ public class EmailBusinessImpl implements IEmailBusiness {
 		folder.open (Folder.READ_ONLY); // Abra la bandeja de entrada
 
 		// Debido a que el protocolo POP3 no puede conocer el estado del correo, getUnreadMessageCount obtiene la cantidad total de correo en la bandeja de entrada
-		//System.out.println ("Número de mensajes no leídos:" + folder.getUnreadMessageCount ());
+		System.out.println ("Número de mensajes no leídos:" + folder.getUnreadMessageCount ());
 
 		// Debido a que el protocolo POP3 no puede conocer el estado del correo electrónico, el resultado obtenido a continuación es siempre 0
 		//System.out.println ("Número de mensajes eliminados:" + folder.getDeletedMessageCount ());
-		//System.out.println ("Correo nuevo:" + folder.getNewMessageCount ());
+		System.out.println ("Correo nuevo:" + folder.getNewMessageCount ());
 
 		// Obtenga el número total de mensajes en la bandeja de entrada
-		//System.out.println ("Número total de mensajes:" + folder.getMessageCount ());
+		System.out.println ("Número total de mensajes:" + folder.getMessageCount ());
 
 		// Obtenga todos los correos electrónicos en la bandeja de entrada y analícelos
 		 messages = folder.getMessages();
 		 
-			//EmailUtils.parseMessage(messages);
+			try {
+				EmailUtils.parseMessage(messages);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
@@ -145,7 +150,7 @@ public class EmailBusinessImpl implements IEmailBusiness {
 					String fechaEnvio;
 					try {
 						fechaEnvio = EmailUtils.getSentDateYYYYMMDD(msg, null);
-						if(  fechaEnvio.equals(mensages)) {
+						if(  date.equals(fechaEnvio)) {
 							temp.add(msg);
 						}
 					} catch (MessagingException e) {
@@ -154,6 +159,16 @@ public class EmailBusinessImpl implements IEmailBusiness {
 					}				
 
 				}
+			}
+			
+			try {
+				EmailUtils.parseMessage(temp);
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
 		}catch (Exception e) {
@@ -168,6 +183,8 @@ public class EmailBusinessImpl implements IEmailBusiness {
 				e.printStackTrace();
 			}
 		}
+		
+
 		
 		return temp;
 	}

@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) {
 	
 		IEmailBusiness IEmailBusiness = new EmailBusinessImpl();
-		List<Message>  listMens = IEmailBusiness.getMensagesEmail("2021-08-26");
+		List<Message>  listMens = IEmailBusiness.getMensagesEmail(null);
 		
 		
 
